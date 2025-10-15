@@ -1,0 +1,47 @@
+// lambdas/createNote/index.js
+
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { v4 as uuidv4 } from "uuid";
+
+// Initialize DynamoDB client
+const client = new DynamoDBClient({ region: process.env.AWS_REGION || "eu-west-3" });
+
+export const handler = async (event) => {
+  try {
+    // Parse request body from API Gateway
+    const { title, body } = JSON.parse(event.body || "{}");
+
+    if (!title || title.trim() === "") {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Title is required" }),
+      };
+    }
+
+    const noteId = uuidv4();
+    const createdAt = new Date().toISOString();
+
+    const params = {
+      TableName: process.env.NOTES_TABLE || "Notes", // DynamoDB table name
+      Item: {
+        noteId: { S: noteId },
+        title: { S: title },
+        body: { S: body || "" },
+        createdAt: { S: createdAt },
+      },
+    };
+
+    await client.send(new PutItemCommand(params));
+
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ noteId, title, body: body || "", createdAt }),
+    };
+  } catch (err) {
+    console.error("Error creating note:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not create note" }),
+    };
+  }
+};

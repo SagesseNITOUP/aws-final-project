@@ -1,0 +1,19 @@
+import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
+
+const client = new DynamoDBClient({ region: process.env.AWS_REGION || "eu-west-3" });
+
+export const handler = async () => {
+  try {
+    const data = await client.send(new ScanCommand({ TableName: process.env.NOTES_TABLE || "Notes" }));
+    const items = (data.Items || []).map(i => ({
+      noteId: i.noteId.S,
+      title: i.title.S,
+      body: i.body.S,
+      createdAt: i.createdAt.S
+    }));
+    return { statusCode: 200, body: JSON.stringify({ items }) };
+  } catch (err) {
+    console.error(err);
+    return { statusCode: 500, body: JSON.stringify({ error: "Could not list notes" }) };
+  }
+};
