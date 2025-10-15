@@ -6,15 +6,10 @@ Web app for notes and expenses using AWS Cognito + API Gateway.
 
 ## Structure
 
-- `index.html` → main HTML page
-- `css/style.css` → styles
-- `js/app.js` → JS logic
-- `assets/` → optional images/icons
-
-## Setup
-
-1. Replace placeholders in `js/app.js` with your Cognito & API Gateway info.
-2. Open `index.html` in a browser.
+- `Backend/ CRUD Operations` → Different Lambda Function
+- `Frontend/ css/style.css & js/app.js` → The Frontend logic
+- `Report` → Project report (pdf file)
+- `Project Architecture` → Image aws.png is an image that shows the whole project architecture.
 
 
 
@@ -29,7 +24,7 @@ Web app for notes and expenses using AWS Cognito + API Gateway.
 | Storage       | Private S3 bucket        | File attachments via pre-signed URLs                  |
 
 
-## 📝 Project Overview
+## Project Overview
 
 **Noteboard Plus** is a web-based application that allows users to:
 
@@ -42,13 +37,8 @@ Web app for notes and expenses using AWS Cognito + API Gateway.
 All data is stored in **DynamoDB**, and the frontend is served globally through **CloudFront** backed by **S3**.
 
 
-## Project Architecture
 
-
-
----
-
-## 🚀 Manual Deployment Process (No CI/CD)
+##  Manual Deployment Process (No CI/CD)
 
 This project was deployed manually, following the required instructions:  
 > “Sans CI/CD et sans CloudWatch, déploiement via la console ou script simple.”
@@ -78,7 +68,7 @@ This project was deployed manually, following the required instructions:
 
 ---
 
-### 2. 🔐 Cognito Authentication Setup
+### 2. Cognito Authentication Setup
 
 1. **Create a User Pool**
    - Sign-in: Email
